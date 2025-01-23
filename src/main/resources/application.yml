@@ -1,9 +1,12 @@
 spring:
   application:
     name: ms-event-manager
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db
 
 server:
-  port: 0
+  port: 9000
 
 eureka:
   client:
