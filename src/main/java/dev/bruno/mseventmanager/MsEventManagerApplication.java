@@ -1,5 +1,6 @@
 package dev.bruno.mseventmanager;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -10,8 +11,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableDiscoveryClient
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableFeignClients
+@EnableRabbit
 public class MsEventManagerApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(MsEventManagerApplication.class, args);
 	}

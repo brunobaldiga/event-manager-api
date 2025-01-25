@@ -1,6 +1,6 @@
-package dev.bruno.mseventmanager.entities.representation;
+package dev.bruno.mseventmanager.domain.representation;
 
-import dev.bruno.mseventmanager.entities.Event;
+import dev.bruno.mseventmanager.domain.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

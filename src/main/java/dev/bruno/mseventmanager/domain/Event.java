@@ -1,9 +1,11 @@
-package dev.bruno.mseventmanager.entities;
+package dev.bruno.mseventmanager.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Document(collection = "db_event")
@@ -12,9 +14,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Event {
+public class Event implements Serializable {
     @Id
     @Column(unique = true, nullable = false)
+    @JsonProperty("eventId")
     private String id;
 
     @Column(name="event_name", nullable=false)
