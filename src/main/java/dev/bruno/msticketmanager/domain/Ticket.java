@@ -1,5 +1,6 @@
 package dev.bruno.msticketmanager.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
@@ -44,6 +45,10 @@ public class Ticket {
 
     @Transient
     private Event event;
+
+    @Column
+    @JsonIgnore
+    private Boolean active = true;
 
     public Ticket(String cpf, String customerName, String customerMail, String BRLamount, String USDamount, String status) {
         this.cpf = cpf;

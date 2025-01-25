@@ -6,6 +6,8 @@ import dev.bruno.msticketmanager.services.TicketService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("tickets")
 public class TicketController {
@@ -19,4 +21,28 @@ public class TicketController {
     public ResponseEntity<Ticket> create(@RequestBody TicketSaveRequest ticketPurchaseRequest) {
         return ResponseEntity.ok(ticketService.purchaseTicket(ticketPurchaseRequest));
     }
+
+    @GetMapping("/get-ticket/{id}")
+    public ResponseEntity<Ticket> findById(@PathVariable String id) {
+        return ResponseEntity.ok(ticketService.findById(id));
+    }
+
+    @PutMapping("/update-ticket/{id}")
+    public ResponseEntity<Ticket> update(@PathVariable String id, @RequestBody TicketSaveRequest ticketSaveRequest) {
+
+        return ResponseEntity.ok(ticketService.update(id, ticketSaveRequest));
+    }
+
+    @DeleteMapping("/cancel-ticket/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        ticketService.softDelete(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check-tickets-by-event/{eventId}")
+    public ResponseEntity<List<Ticket>> findByEventId(@PathVariable String eventId) {
+        return ResponseEntity.ok(ticketService.findByEventId(eventId));
+    }
+
 }
