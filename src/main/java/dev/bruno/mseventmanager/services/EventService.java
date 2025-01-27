@@ -1,25 +1,30 @@
 package dev.bruno.mseventmanager.services;
 
-import dev.bruno.mseventmanager.client.ViaCepClient;
-import dev.bruno.mseventmanager.client.ViaCepResponse;
+import dev.bruno.mseventmanager.client.ticket.TicketClient;
+import dev.bruno.mseventmanager.client.viacep.ViaCepClient;
+import dev.bruno.mseventmanager.client.viacep.ViaCepResponse;
 import dev.bruno.mseventmanager.domain.Event;
+import dev.bruno.mseventmanager.domain.EventCheck;
+import dev.bruno.mseventmanager.domain.mapper.EventMapper;
 import dev.bruno.mseventmanager.domain.representation.EventSaveRequest;
 import dev.bruno.mseventmanager.repositories.EventRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
+@RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;
     private final ViaCepClient viaCepClient;
-
-    public EventService(EventRepository eventRepository, ViaCepClient viaCepClient) {
-        this.eventRepository = eventRepository;
-        this.viaCepClient = viaCepClient;
-    }
+    private final TicketClient ticketClient;
 
     public Event save(EventSaveRequest eventSaveRequest) {
         ViaCepResponse cepInfo = viaCepClient.getCepInfo(eventSaveRequest.getCep());
@@ -53,18 +58,21 @@ public class EventService {
         Event event = findById(id);
         ViaCepResponse cepInfo = viaCepClient.getCepInfo(eventSaveRequest.getCep());
 
-        event.setEventName(eventSaveRequest.getEventName());
-        event.setDate(eventSaveRequest.getDateTime());
-        event.setCep(eventSaveRequest.getCep());
-        event.setLogradouro(cepInfo.getLogradouro());
-        event.setBairro(cepInfo.getBairro());
-        event.setCidade(cepInfo.getLocalidade());
-        event.setUf(cepInfo.getUf());
+        EventMapper.update(eventSaveRequest, event, cepInfo);
 
         return eventRepository.save(event);
     }
 
-    public void delete(String id) {
-        eventRepository.deleteById(id);
+    public ResponseEntity<?> delete(String eventId) {
+        EventCheck eventCheck = ticketClient.getEventCheck(eventId);
+
+        if (eventCheck.getHasTickets()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .header("Content-Type", "application/json")
+                    .body(Map.of("error", "O evento não pode ser deletado porque possui ingressos vendidos."));
+        }
+
+        eventRepository.deleteById(eventId);
+        return ResponseEntity.noContent().build();
     }
 }

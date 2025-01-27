@@ -1,4 +1,4 @@
-package dev.bruno.mseventmanager.client;
+package dev.bruno.mseventmanager.client.viacep;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

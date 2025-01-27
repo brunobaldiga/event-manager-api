@@ -1,25 +1,19 @@
 package dev.bruno.mseventmanager.config;
 
 import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class RabbitMQConfig {
-    @Value("${mq.queues.request-event-details}")
-    private String queueRequestEventDetails;
-
-    @Value("${mq.queues.response-event-details}")
-    private String queueResponseEventDetails;
-
     @Bean
-    public Queue requestQueue() {
-        return new Queue(queueRequestEventDetails, true);
+    public Queue requestEventQueue() {
+        return new Queue("request-event", true);
     }
 
     @Bean
-    public Queue responseQueue() {
-        return new Queue(queueResponseEventDetails, true);
+    public Queue responseEventQueue() {
+        return new Queue("response-event", true);
     }
 }

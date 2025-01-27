@@ -1,4 +1,4 @@
-package dev.bruno.mseventmanager.client;
+package dev.bruno.mseventmanager.client.viacep;
 
 import lombok.Getter;
 import lombok.Setter;

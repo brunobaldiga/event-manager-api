@@ -57,11 +57,8 @@ public class EventController {
     }
 
     @DeleteMapping("/delete-event/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        // implementar logica de comunicação
-        eventService.delete(id);
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        return eventService.delete(id);
     }
 
 }
