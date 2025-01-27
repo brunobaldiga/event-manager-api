@@ -1,12 +1,11 @@
 package dev.bruno.msticketmanager.controllers;
 
+import dev.bruno.msticketmanager.domain.EventCheck;
 import dev.bruno.msticketmanager.domain.Ticket;
 import dev.bruno.msticketmanager.domain.representation.TicketSaveRequest;
 import dev.bruno.msticketmanager.services.TicketService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("tickets")
@@ -27,9 +26,13 @@ public class TicketController {
         return ResponseEntity.ok(ticketService.findById(id));
     }
 
+    @GetMapping("/check-tickets-by-event/{eventId}")
+    public ResponseEntity<EventCheck> checkTicketsByEventId(@PathVariable String eventId) {
+        return ResponseEntity.ok(ticketService.checkTicketsByEventId(eventId));
+    }
+
     @PutMapping("/update-ticket/{id}")
     public ResponseEntity<Ticket> update(@PathVariable String id, @RequestBody TicketSaveRequest ticketSaveRequest) {
-
         return ResponseEntity.ok(ticketService.update(id, ticketSaveRequest));
     }
 
@@ -39,10 +42,4 @@ public class TicketController {
 
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("/check-tickets-by-event/{eventId}")
-    public ResponseEntity<List<Ticket>> findByEventId(@PathVariable String eventId) {
-        return ResponseEntity.ok(ticketService.findByEventId(eventId));
-    }
-
 }

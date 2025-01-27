@@ -17,28 +17,26 @@ import java.util.concurrent.TimeUnit;
 public class EventRequestProducer {
     private final RabbitTemplate rabbitTemplate;
 
-    @Value("${mq.queues.request-event-details}")
-    private Queue queueRequestEventDetails;
+    @Value("${mq.queues.request-event}")
+    private Queue queue;
 
-    private final BlockingQueue<Event> eventResponseQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Event> blockingQueue = new LinkedBlockingQueue<>();
 
     public EventRequestProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
     public void sendEventRequest(String eventId) {
-        rabbitTemplate.convertAndSend(queueRequestEventDetails.getName(), eventId);
+        rabbitTemplate.convertAndSend(queue.getName(), eventId);
     }
 
-
-    @RabbitListener(queues = "${mq.queues.response-event-details}")
+    @RabbitListener(queues = "${mq.queues.response-event}")
     public void handleEventResponse(@Payload String payload) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Event event = mapper.readValue(payload, Event.class);
-        eventResponseQueue.offer(event);
+        blockingQueue.offer(mapper.readValue(payload, Event.class));
     }
 
     public Event getEventResponse() throws InterruptedException {
-        return eventResponseQueue.poll(10, TimeUnit.SECONDS);
+        return blockingQueue.poll(10, TimeUnit.SECONDS);
     }
 }

@@ -1,6 +1,7 @@
 package dev.bruno.msticketmanager.services;
 
 import dev.bruno.msticketmanager.domain.Event;
+import dev.bruno.msticketmanager.domain.EventCheck;
 import dev.bruno.msticketmanager.domain.Ticket;
 import dev.bruno.msticketmanager.domain.mapper.TicketMapper;
 import dev.bruno.msticketmanager.domain.representation.TicketSaveRequest;
@@ -8,8 +9,6 @@ import dev.bruno.msticketmanager.rabbitmq.EventRequestProducer;
 import dev.bruno.msticketmanager.repositories.TicketRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -75,7 +74,7 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
-    public List<Ticket> findByEventId(String eventId) {
-        return ticketRepository.findByEventEventIdAndActiveTrue(eventId);
+    public EventCheck checkTicketsByEventId(String eventId) {
+        return new EventCheck(eventId, ticketRepository.existsByEventEventIdAndActiveTrue(eventId));
     }
 }

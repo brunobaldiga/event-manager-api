@@ -12,8 +12,8 @@ spring:
 
 mq:
   queues:
-    request-event-details: request-event-details
-    response-event-details: response-event-details
+    request-event: request-event
+    response-event: response-event
 
 server:
   port: 9001
