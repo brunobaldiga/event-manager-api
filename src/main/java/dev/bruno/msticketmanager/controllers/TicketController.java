@@ -4,6 +4,7 @@ import dev.bruno.msticketmanager.domain.EventCheck;
 import dev.bruno.msticketmanager.domain.Ticket;
 import dev.bruno.msticketmanager.domain.representation.TicketSaveRequest;
 import dev.bruno.msticketmanager.services.TicketService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class TicketController {
     }
 
     @PostMapping("/create-ticket")
-    public ResponseEntity<Ticket> create(@RequestBody TicketSaveRequest ticketPurchaseRequest) {
+    public ResponseEntity<Ticket> create(@Valid @RequestBody TicketSaveRequest ticketPurchaseRequest) {
         return ResponseEntity.ok(ticketService.purchaseTicket(ticketPurchaseRequest));
     }
 
@@ -32,7 +33,7 @@ public class TicketController {
     }
 
     @PutMapping("/update-ticket/{id}")
-    public ResponseEntity<Ticket> update(@PathVariable String id, @RequestBody TicketSaveRequest ticketSaveRequest) {
+    public ResponseEntity<Ticket> update(@PathVariable String id, @Valid @RequestBody TicketSaveRequest ticketSaveRequest) {
         return ResponseEntity.ok(ticketService.update(id, ticketSaveRequest));
     }
 

@@ -43,19 +43,23 @@ public class Ticket {
     @Column(nullable = false)
     private String status;
 
-    @Transient
-    private Event event;
+    @Column
+    private Boolean active = true;
 
     @Column
     @JsonIgnore
-    private Boolean active = true;
+    private String eventId;
 
-    public Ticket(String cpf, String customerName, String customerMail, String BRLamount, String USDamount, String status) {
+    @Transient
+    private Event event;
+
+    public Ticket(String cpf, String customerName, String customerMail, String brLamount, String usDamount, String eventId, String status) {
         this.cpf = cpf;
         this.customerName = customerName;
         this.customerMail = customerMail;
-        this.BRLamount = BRLamount;
-        this.USDamount = USDamount;
+        this.BRLamount = brLamount;
+        this.USDamount = usDamount;
+        this.eventId = eventId;
         this.status = status;
     }
 

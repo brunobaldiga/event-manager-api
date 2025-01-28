@@ -10,7 +10,9 @@ import org.modelmapper.ModelMapper;
 public class TicketMapper {
     public static void update(TicketSaveRequest ticketSaveRequest, Ticket ticket) {
         ModelMapper mapper = new ModelMapper();
-        mapper.typeMap(TicketSaveRequest.class, Ticket.class).addMappings(m -> m.skip(Ticket::setId));
+        mapper.typeMap(TicketSaveRequest.class, Ticket.class)
+                .addMappings(m -> m.skip(Ticket::setId))
+                .addMappings(m -> m.skip(Ticket::setEvent));
         mapper.map(ticketSaveRequest, ticket);
     }
 }
