@@ -7,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.UUID;
-
 @Entity
 @Document(collection = "db_ticket")
 @AllArgsConstructor
@@ -21,6 +19,7 @@ public class Ticket {
     @Id
     @Column(unique = true, nullable = false)
     @JsonProperty("ticketId")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String id;
 
     @Column(nullable = false, unique = true)
@@ -61,12 +60,5 @@ public class Ticket {
         this.USDamount = usDamount;
         this.eventId = eventId;
         this.status = status;
-    }
-
-    @PrePersist
-    private void generateId() {
-        if (id == null) {
-            id = UUID.randomUUID().toString();
-        }
     }
 }
