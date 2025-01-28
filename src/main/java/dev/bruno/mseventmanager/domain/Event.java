@@ -6,7 +6,6 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Document(collection = "db_event")
 @AllArgsConstructor
@@ -18,6 +17,7 @@ public class Event implements Serializable {
     @Id
     @Column(unique = true, nullable = false)
     @JsonProperty("eventId")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private String id;
 
     @Column(name="event_name", nullable=false)
@@ -48,12 +48,5 @@ public class Event implements Serializable {
         this.bairro = bairro;
         this.cidade = cidade;
         this.uf = uf;
-    }
-
-    @PrePersist
-    private void generateId() {
-        if (id == null) {
-            id = UUID.randomUUID().toString();
-        }
     }
 }
