@@ -7,6 +7,7 @@ import dev.bruno.mseventmanager.domain.Event;
 import dev.bruno.mseventmanager.domain.EventCheck;
 import dev.bruno.mseventmanager.domain.mapper.EventMapper;
 import dev.bruno.mseventmanager.domain.representation.EventSaveRequest;
+import dev.bruno.mseventmanager.exceptions.ResourceNotFoundException;
 import dev.bruno.mseventmanager.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public class EventService {
     private final TicketClient ticketClient;
 
     public Event save(EventSaveRequest eventSaveRequest) {
-        ViaCepResponse cepInfo = viaCepClient.getCepInfo(eventSaveRequest.getCep());
+        ViaCepResponse cepInfo = getCepInfo(eventSaveRequest.getCep());
 
         Event event = eventSaveRequest.toModel();
         event.setLogradouro(cepInfo.getLogradouro());
@@ -40,7 +41,7 @@ public class EventService {
 
     public Event findById(String id) {
         return eventRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Não implementado")
+                () -> new ResourceNotFoundException("Evento não encontrado.")
         );
     }
 
@@ -56,7 +57,7 @@ public class EventService {
 
     public Event update(String id, EventSaveRequest eventSaveRequest) {
         Event event = findById(id);
-        ViaCepResponse cepInfo = viaCepClient.getCepInfo(eventSaveRequest.getCep());
+        ViaCepResponse cepInfo = getCepInfo(eventSaveRequest.getCep());
 
         EventMapper.update(eventSaveRequest, event, cepInfo);
 
@@ -74,5 +75,13 @@ public class EventService {
 
         eventRepository.deleteById(eventId);
         return ResponseEntity.noContent().build();
+    }
+
+    private ViaCepResponse getCepInfo(String cep) {
+        try {
+            return viaCepClient.getCepInfo(cep);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("CEP não encontrado.");
+        }
     }
 }

@@ -10,11 +10,6 @@ spring:
     username: guest
     password: guest
 
-mq:
-  queues:
-    request-event: request-event
-    response-event: response-event
-
 server:
   port: 9000
 
