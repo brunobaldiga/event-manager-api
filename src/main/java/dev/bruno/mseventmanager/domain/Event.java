@@ -39,14 +39,4 @@ public class Event implements Serializable {
         this.date = date;
         this.cep = cep;
     }
-
-    public Event(String eventName, String date, String cep, String logradouro, String bairro, String cidade, String uf) {
-        this.eventName = eventName;
-        this.date = date;
-        this.cep = cep;
-        this.logradouro = logradouro;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.uf = uf;
-    }
 }

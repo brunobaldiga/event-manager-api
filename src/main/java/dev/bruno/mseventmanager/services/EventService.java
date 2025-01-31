@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +31,7 @@ public class EventService {
         ViaCepResponse cepInfo = getCepInfo(eventSaveRequest.getCep());
 
         Event event = eventSaveRequest.toModel();
+
         event.setLogradouro(cepInfo.getLogradouro());
         event.setBairro(cepInfo.getBairro());
         event.setCidade(cepInfo.getLocalidade());
@@ -74,7 +74,12 @@ public class EventService {
                     .body(Map.of("error", "O evento não pode ser deletado porque possui ingressos vendidos."));
         }
 
+        if (!eventRepository.existsById(eventId)) {
+            throw new ResourceNotFoundException("Evento não encontrado.");
+        }
+
         eventRepository.deleteById(eventId);
+
         return ResponseEntity.noContent().build();
     }
 

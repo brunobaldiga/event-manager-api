@@ -5,6 +5,7 @@ import dev.bruno.mseventmanager.domain.representation.EventSaveRequest;
 import dev.bruno.mseventmanager.services.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +26,14 @@ public class EventController {
 
     @PostMapping("/create-event")
     @Operation(summary = "Criar um novo evento", description = "Cria um evento com nome, data, hora e endereço")
-    public ResponseEntity<Event> create(@RequestBody EventSaveRequest eventSaveRequest) {
+    public ResponseEntity<Event> create(@RequestBody @Valid EventSaveRequest eventSaveRequest) {
         Event event = eventService.save(eventSaveRequest);
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/get-event/{id}")
                 .buildAndExpand(event.getId())
                 .toUri();
+
         return ResponseEntity.created(location).body(event);
     }
 
@@ -58,7 +59,7 @@ public class EventController {
 
     @PutMapping("/update-event/{id}")
     @Operation(summary = "Atualizar evento por ID", description = "Atualiza as informações de um evento com base no ID fornecido")
-    public ResponseEntity<Event> update(@PathVariable String id, @RequestBody EventSaveRequest eventSaveRequest) {
+    public ResponseEntity<Event> update(@PathVariable String id, @RequestBody @Valid EventSaveRequest eventSaveRequest) {
         Event event = eventService.update(id, eventSaveRequest);
 
         return ResponseEntity.ok(event);
