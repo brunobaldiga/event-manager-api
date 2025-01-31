@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("tickets")
@@ -22,8 +25,17 @@ public class TicketController {
 
     @PostMapping("/create-ticket")
     @Operation(summary = "Criar um novo ticket", description = "Cria um ticket para o evento")
-    public ResponseEntity<Ticket> create(@Valid @RequestBody TicketSaveRequest ticketPurchaseRequest) {
-        return ResponseEntity.ok(ticketService.purchaseTicket(ticketPurchaseRequest));
+    public ResponseEntity<Ticket> create(@RequestBody @Valid TicketSaveRequest ticketPurchaseRequest) {
+
+        Ticket ticket = ticketService.purchaseTicket(ticketPurchaseRequest);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/get-event/{id}")
+                .buildAndExpand(ticket.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(ticket);
     }
 
     @GetMapping("/get-ticket/{id}")
@@ -40,7 +52,7 @@ public class TicketController {
 
     @PutMapping("/update-ticket/{id}")
     @Operation(summary = "Atualizar um ticket", description = "Atualiza as informações de um ticket existente")
-    public ResponseEntity<Ticket> update(@PathVariable String id, @Valid @RequestBody TicketSaveRequest ticketSaveRequest) {
+    public ResponseEntity<Ticket> update(@PathVariable String id, @RequestBody @Valid TicketSaveRequest ticketSaveRequest) {
         return ResponseEntity.ok(ticketService.update(id, ticketSaveRequest));
     }
 

@@ -80,12 +80,6 @@ public class TicketService {
         return ticket;
     }
 
-    private Ticket getTicket(String id) {
-        return ticketRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Ticket não encontrado.")
-        );
-    }
-
     public void softDelete(String id) {
         Ticket ticket = getTicket(id);
 
@@ -96,6 +90,12 @@ public class TicketService {
 
     public EventCheck checkTicketsByEventId(String eventId) {
         return new EventCheck(eventId, ticketRepository.existsByEventIdAndActiveTrue(eventId));
+    }
+
+    private Ticket getTicket(String id) {
+        return ticketRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Ticket não encontrado.")
+        );
     }
 
     private Event getEvent(String eventId) {
