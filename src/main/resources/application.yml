@@ -3,17 +3,17 @@ spring:
     name: ms-ticket-manager
   data:
     mongodb:
-      uri: mongodb://localhost:27017/db
+      uri: ${SPRING_DATA_MONGODB_URI}
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${SPRING_RABBITMQ_HOST}
+    port: ${SPRING_RABBITMQ_PORT}
+    username: ${SPRING_RABBITMQ_USERNAME}
+    password: ${SPRING_RABBITMQ_PASSWORD}
   mail:
     host: smtp.gmail.com
     port: 587
-    username: awdadadadwawdaw@gmail.com
-    password: ychu nxgz rnpe utbt
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -26,9 +26,9 @@ mq:
     email-queue: email-queue
 
 server:
-  port: 9001
+  port: ${SERVER_PORT}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka-server:8761/eureka
