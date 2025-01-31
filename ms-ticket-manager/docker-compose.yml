@@ -9,7 +9,7 @@ services:
       - "9001:9001"
     environment:
       - SERVER_PORT=9001
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://10.0.8.201:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://10.0.8.201:8080/eureka/
       - SPRING_DATA_MONGODB_URI=mongodb://10.0.8.201:27017/db_ticket
       - SPRING_RABBITMQ_HOST=10.0.8.201
       - SPRING_RABBITMQ_PORT=5672
