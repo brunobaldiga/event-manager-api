@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   eureka-server:
-    build: ./eureka-server
+    image: brunobaldiga/eureka-server:latest
     container_name: eureka-server
     restart: always
     ports:
@@ -11,7 +11,7 @@ services:
       - SERVER_PORT=8761
 
   ms-event-manager:
-    build: ./ms-event-manager
+    image: brunobaldiga/ms-event-manager:latest
     container_name: ms-event-manager
     restart: always
     ports:
@@ -30,7 +30,7 @@ services:
       - SPRING_RABBITMQ_PASSWORD=guest
 
   ms-ticket-manager:
-    build: ./ms-ticket-manager
+    image: brunobaldiga/ms-ticket-manager:latest
     container_name: ms-ticket-manager
     restart: always
     ports:
