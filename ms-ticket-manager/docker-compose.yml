@@ -13,7 +13,7 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://10.0.8.201:27017/db_ticket
       - SPRING_RABBITMQ_HOST=10.0.8.201
       - SPRING_RABBITMQ_PORT=5672
-      - SPRING_RABBITMQ_USERNAME=guest
-      - SPRING_RABBITMQ_PASSWORD=guest
+      - SPRING_RABBITMQ_USERNAME=admin
+      - SPRING_RABBITMQ_PASSWORD=admin
       - SPRING_MAIL_USERNAME=awdadadadwawdaw@gmail.com
       - SPRING_MAIL_PASSWORD=ychu nxgz rnpe utbt
